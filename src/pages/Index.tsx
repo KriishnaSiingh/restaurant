@@ -1,16 +1,276 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Link } from 'react-router-dom';
+import { ArrowRight, Star, Utensils, BedDouble, Percent } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import ScrollReveal from '@/components/ScrollReveal';
+import SectionHeading from '@/components/SectionHeading';
+import { menuItems } from '@/data/menuData';
+import { rooms } from '@/data/roomData';
+import { useState } from 'react';
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const testimonials = [
+  { name: 'Sophia Laurent', role: 'Food Critic', text: 'An unforgettable culinary journey. The truffle risotto alone is worth the visit. The ambience transports you to another world.', rating: 5 },
+  { name: 'James Worthington', role: 'Travel Blogger', text: 'The Royal Suite exceeded every expectation. Impeccable service, breathtaking views, and the spa is world-class.', rating: 5 },
+  { name: 'Elena Vasquez', role: 'Michelin Guide', text: 'Lounge redefines luxury dining. Every dish tells a story, every bite is a masterpiece. A must-visit destination.', rating: 5 },
+];
+
+export default function Home() {
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const featuredDishes = menuItems.filter(m => m.isChefSpecial).slice(0, 3);
+  const featuredRooms = rooms.slice(0, 3);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="min-h-screen">
+      {/* Hero */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600)' }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background" />
+        </div>
+        <div className="relative z-10 text-center px-4 max-w-4xl">
+          <p className="text-primary text-sm tracking-[0.4em] uppercase mb-6 animate-fade-up font-body">Fine Dining & Luxury Stay</p>
+          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-foreground leading-tight animate-fade-up" style={{ animationDelay: '0.2s' }}>
+            Where Elegance<br />
+            <span className="text-gradient-gold italic">Meets Indulgence</span>
+          </h1>
+          <p className="text-muted-foreground mt-6 text-lg md:text-xl max-w-2xl mx-auto animate-fade-up" style={{ animationDelay: '0.4s' }}>
+            Experience the art of refined hospitality — exquisite cuisine, luxurious rooms, and timeless ambience.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-up" style={{ animationDelay: '0.6s' }}>
+            <Link to="/restaurant">
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm tracking-widest uppercase gap-2">
+                <Utensils size={16} /> Explore Restaurant
+              </Button>
+            </Link>
+            <Link to="/hotel">
+              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-sm tracking-widest uppercase gap-2">
+                <BedDouble size={16} /> Book a Room
+              </Button>
+            </Link>
+          </div>
+        </div>
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float">
+          <div className="w-6 h-10 border-2 border-primary/40 rounded-full flex justify-center pt-2">
+            <div className="w-1 h-3 bg-primary/60 rounded-full" />
+          </div>
+        </div>
+      </section>
+
+      {/* Today's Offers */}
+      <section className="py-12 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-y border-primary/20">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 text-center md:text-left">
+            <div className="flex items-center gap-3">
+              <Percent className="text-primary" size={24} />
+              <span className="text-foreground font-display text-lg">Today's Offers</span>
+            </div>
+            <div className="flex flex-wrap justify-center gap-4">
+              <span className="glass px-4 py-2 rounded-full text-sm text-foreground">🍽️ 20% off Chef's Special</span>
+              <span className="glass px-4 py-2 rounded-full text-sm text-foreground">🏨 Free breakfast with Suite booking</span>
+              <span className="glass px-4 py-2 rounded-full text-sm text-foreground">🥂 Complimentary welcome drink</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Dishes */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          <SectionHeading title="Chef's Signatures" subtitle="Culinary Excellence" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {featuredDishes.map((dish, i) => (
+              <ScrollReveal key={dish.id} delay={i * 0.15}>
+                <div className="group glass rounded-xl overflow-hidden hover:shadow-gold transition-all duration-500">
+                  <div className="relative overflow-hidden aspect-[4/3]">
+                    <img src={dish.image} alt={dish.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                    <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full font-semibold">Chef's Special</div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-display text-xl text-foreground">{dish.name}</h3>
+                    <p className="text-muted-foreground text-sm mt-2 line-clamp-2">{dish.description}</p>
+                    <p className="text-primary font-display text-xl mt-3">${dish.price}</p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link to="/restaurant">
+              <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground gap-2 tracking-widest uppercase text-xs">
+                View Full Menu <ArrowRight size={14} />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Rooms */}
+      <section className="py-24 bg-card">
+        <div className="container mx-auto px-4">
+          <SectionHeading title="Luxury Accommodations" subtitle="Rest & Rejuvenate" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {featuredRooms.map((room, i) => (
+              <ScrollReveal key={room.id} delay={i * 0.15}>
+                <div className="group glass rounded-xl overflow-hidden hover:shadow-gold transition-all duration-500">
+                  <div className="relative overflow-hidden aspect-[4/3]">
+                    <img src={room.image} alt={room.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                    <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full font-semibold capitalize">{room.type}</div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-display text-xl text-foreground">{room.name}</h3>
+                    <p className="text-muted-foreground text-sm mt-2 line-clamp-2">{room.description}</p>
+                    <div className="flex items-baseline gap-1 mt-3">
+                      <span className="text-primary font-display text-xl">${room.price}</span>
+                      <span className="text-muted-foreground text-sm">/night</span>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link to="/hotel">
+              <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground gap-2 tracking-widest uppercase text-xs">
+                View All Rooms <ArrowRight size={14} />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Dinner + Stay Package */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200)' }} />
+        <div className="container mx-auto px-4 relative z-10">
+          <ScrollReveal>
+            <div className="max-w-3xl mx-auto text-center glass-strong rounded-2xl p-12 md:p-16">
+              <div className="inline-block bg-primary text-primary-foreground text-xs px-4 py-1 rounded-full font-bold tracking-widest uppercase mb-6">Save 30%</div>
+              <h2 className="font-display text-3xl md:text-5xl text-foreground">Dinner & Stay Package</h2>
+              <p className="text-muted-foreground mt-4 text-lg max-w-xl mx-auto">
+                Enjoy a 5-course chef's tasting menu paired with a luxurious overnight stay. The ultimate indulgence.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center mt-8 items-center">
+                <div className="text-center">
+                  <p className="text-muted-foreground line-through text-lg">$580</p>
+                  <p className="text-primary font-display text-4xl">$399</p>
+                  <p className="text-muted-foreground text-sm">per couple</p>
+                </div>
+              </div>
+              <Link to="/contact">
+                <Button className="mt-8 bg-primary text-primary-foreground hover:bg-primary/90 px-10 py-6 text-sm tracking-widest uppercase">
+                  Reserve Package
+                </Button>
+              </Link>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-24 bg-card">
+        <div className="container mx-auto px-4">
+          <SectionHeading title="Guest Experiences" subtitle="What They Say" />
+          <ScrollReveal>
+            <div className="max-w-2xl mx-auto text-center">
+              <div className="flex justify-center gap-1 mb-6">
+                {Array(testimonials[currentTestimonial].rating).fill(0).map((_, i) => (
+                  <Star key={i} size={18} className="fill-primary text-primary" />
+                ))}
+              </div>
+              <p className="text-foreground text-lg md:text-xl italic leading-relaxed font-display">
+                "{testimonials[currentTestimonial].text}"
+              </p>
+              <p className="text-primary mt-6 font-semibold">{testimonials[currentTestimonial].name}</p>
+              <p className="text-muted-foreground text-sm">{testimonials[currentTestimonial].role}</p>
+              <div className="flex justify-center gap-3 mt-8">
+                {testimonials.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentTestimonial(i)}
+                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === currentTestimonial ? 'bg-primary w-8' : 'bg-muted-foreground/30'}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Quick Booking */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          <SectionHeading title="Make a Reservation" subtitle="Book Your Experience" />
+          <ScrollReveal>
+            <div className="max-w-2xl mx-auto glass-strong rounded-2xl p-8 md:p-12">
+              <QuickBookingForm />
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
     </div>
   );
-};
+}
 
-const Index = PlaceholderIndex;
+function QuickBookingForm() {
+  const [type, setType] = useState<'restaurant' | 'hotel'>('restaurant');
+  const [submitted, setSubmitted] = useState(false);
 
-export default Index;
+  if (submitted) {
+    return (
+      <div className="text-center py-8">
+        <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span className="text-3xl">✓</span>
+        </div>
+        <h3 className="font-display text-2xl text-foreground">Reservation Confirmed!</h3>
+        <p className="text-muted-foreground mt-2">We'll send you a confirmation shortly.</p>
+        <Button variant="outline" className="mt-6 border-primary/30 text-primary" onClick={() => setSubmitted(false)}>Make Another</Button>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={e => { e.preventDefault(); setSubmitted(true); }}>
+      <div className="flex gap-2 mb-8">
+        {(['restaurant', 'hotel'] as const).map(t => (
+          <button
+            key={t}
+            type="button"
+            onClick={() => setType(t)}
+            className={`flex-1 py-3 rounded-lg text-sm tracking-widest uppercase transition-all ${type === t ? 'bg-primary text-primary-foreground' : 'glass text-muted-foreground hover:text-foreground'}`}
+          >
+            {t === 'restaurant' ? '🍽️ Restaurant' : '🏨 Hotel'}
+          </button>
+        ))}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input required placeholder="Full Name" className="bg-secondary/50 border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground text-sm outline-none focus:border-primary transition-colors" />
+        <input required type="email" placeholder="Email" className="bg-secondary/50 border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground text-sm outline-none focus:border-primary transition-colors" />
+        <input required type="date" className="bg-secondary/50 border border-border rounded-lg px-4 py-3 text-foreground text-sm outline-none focus:border-primary transition-colors" />
+        {type === 'restaurant' ? (
+          <>
+            <select className="bg-secondary/50 border border-border rounded-lg px-4 py-3 text-foreground text-sm outline-none focus:border-primary transition-colors">
+              <option>6:00 PM</option><option>7:00 PM</option><option>8:00 PM</option><option>9:00 PM</option>
+            </select>
+            <select className="bg-secondary/50 border border-border rounded-lg px-4 py-3 text-foreground text-sm outline-none focus:border-primary transition-colors md:col-span-2">
+              <option>2 Guests</option><option>3 Guests</option><option>4 Guests</option><option>5 Guests</option><option>6+ Guests</option>
+            </select>
+          </>
+        ) : (
+          <>
+            <input required type="date" placeholder="Check-out" className="bg-secondary/50 border border-border rounded-lg px-4 py-3 text-foreground text-sm outline-none focus:border-primary transition-colors" />
+            <select className="bg-secondary/50 border border-border rounded-lg px-4 py-3 text-foreground text-sm outline-none focus:border-primary transition-colors">
+              <option>1 Room</option><option>2 Rooms</option><option>3 Rooms</option>
+            </select>
+            <select className="bg-secondary/50 border border-border rounded-lg px-4 py-3 text-foreground text-sm outline-none focus:border-primary transition-colors">
+              <option>1 Guest</option><option>2 Guests</option><option>3 Guests</option><option>4 Guests</option>
+            </select>
+          </>
+        )}
+      </div>
+      <Button type="submit" className="w-full mt-6 bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-sm tracking-widest uppercase">
+        Confirm Reservation
+      </Button>
+    </form>
+  );
+}
