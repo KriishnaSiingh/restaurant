@@ -21,40 +21,83 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600)' }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background" />
-        </div>
-        <div className="relative z-10 text-center px-4 max-w-4xl">
-          <p className="text-primary text-sm tracking-[0.4em] uppercase mb-6 animate-fade-up font-body">Fine Dining & Luxury Stay</p>
-          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-foreground leading-tight animate-fade-up" style={{ animationDelay: '0.2s' }}>
-            Where Elegance<br />
-            <span className="text-gradient-gold italic">Meets Indulgence</span>
-          </h1>
-          <p className="text-muted-foreground mt-6 text-lg md:text-xl max-w-2xl mx-auto animate-fade-up" style={{ animationDelay: '0.4s' }}>
-            Experience the art of refined hospitality — exquisite cuisine, luxurious rooms, and timeless ambience.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-up" style={{ animationDelay: '0.6s' }}>
-            <Link to="/restaurant">
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-sm tracking-widest uppercase gap-2">
-                <Utensils size={16} /> Explore Restaurant
-              </Button>
-            </Link>
-            <Link to="/hotel">
-              <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-sm tracking-widest uppercase gap-2">
-                <BedDouble size={16} /> Book a Room
-              </Button>
-            </Link>
+      <section id="intro" className="relative z-10 w-full overflow-hidden bg-background pb-10" style={{ height: 'max(800px, 100vh)' }}>
+        <div className="container mx-auto px-4 lg:px-8 h-full relative">
+          <div className="grid grid-cols-1 lg:grid-cols-12 auto-rows-auto items-center h-full relative" style={{ paddingTop: 'max(13.6rem, 24vh)' }}>
+            
+            {/* Header */}
+            <div className="lg:col-start-2 lg:col-span-6 row-start-1 z-[2] relative">
+              <div className="font-headings italic text-lg md:text-xl text-foreground mt-1 mb-[-0.375rem] relative flex items-center tracking-[-0.02em] font-medium">
+                <div className="hidden lg:block absolute left-[-20%] top-1/2 w-[15%] h-[1px] bg-foreground/50"></div>
+                <span className="pl-1">Welcome to</span>
+              </div>
+              <h1 className="font-display leading-[1] mt-0 text-foreground" style={{ fontSize: 'clamp(5rem, 3rem + 8vw, 18.4rem)' }}>
+                Sagar<br />
+                Shree
+              </h1>
+            </div>
+
+            {/* Primary Picture (Absolute Center on Desktop) */}
+            <div className="hidden lg:flex absolute z-[1]" style={{ top: 'max(13.6rem, 24vh)', left: '50%', transform: 'translateX(-50%)', width: '33.3333%', padding: '0 1rem' }}>
+              <img 
+                src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=1200&auto=format&fit=crop" 
+                alt="Sagar Shree Specialty" 
+                className="w-full object-cover align-bottom m-0 shadow-xl" 
+                style={{ aspectRatio: '1200/1650' }}
+              />
+            </div>
+
+            {/* Secondary Block */}
+            <div className="lg:col-start-9 lg:col-span-4 lg:row-start-1 lg:row-end-3 flex flex-col justify-center items-center relative z-[2] mt-12 lg:mt-0 pb-8 lg:pb-0">
+              <figure className="relative w-full mb-0">
+                <img 
+                  src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1050" 
+                  alt="Sagar Shree Interior" 
+                  className="w-full object-cover align-bottom m-0 shadow-lg" 
+                  style={{ aspectRatio: '1050/600' }}
+                />
+              </figure>
+              <div className="w-full border-t border-border/80 pt-4 mt-6">
+                <p className="text-foreground/80 md:text-[15px] font-body leading-relaxed m-0 border-t border-border/40 pt-4">
+                  Savor moments of bliss with every bite, as our expertly crafted dishes and luxurious stay embrace your senses.
+                </p>
+                <ul className="flex flex-wrap gap-4 list-none p-0 mt-6 mx-0">
+                  <li><a href="#0" className="text-sm tracking-[0.15em] text-foreground/50 uppercase hover:text-foreground transition-colors">FB</a></li>
+                  <li><a href="#0" className="text-sm tracking-[0.15em] text-foreground/50 uppercase hover:text-foreground transition-colors">IG</a></li>
+                  <li><a href="#0" className="text-sm tracking-[0.15em] text-foreground/50 uppercase hover:text-foreground transition-colors">PI</a></li>
+                  <li><a href="#0" className="text-sm tracking-[0.15em] text-foreground/50 uppercase hover:text-foreground transition-colors">X</a></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Scroll Button */}
+            <div className="hidden lg:flex lg:col-start-2 lg:col-span-6 lg:row-start-2 relative z-[2]">
+              <a href="#about" className="inline-flex items-center justify-center relative hover:opacity-80 transition-opacity" style={{ width: '9.2rem', height: '9.2rem' }}>
+                <div className="absolute inset-0 rounded-full animate-[rotation_12s_linear_infinite]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 100 100%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath id=%22curve%22 fill=%22transparent%22 d=%22M 15, 50 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0%22/%3E%3Ctext fill=%22%234E342E%22 font-family=%22sans-serif%22 font-size=%2210%22 font-weight=%22600%22 letter-spacing=%224px%22%3E%3CtextPath href=%22%23curve%22%3E SCROLL DOWN \u2022 SCROLL DOWN \u2022 SCROLL DOWN \u2022%3C/textPath%3E%3C/text%3E%3C/svg%3E")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+                <div className="flex justify-center items-center bg-background rounded-full z-10 w-8 h-8">
+                  <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                     <path d="m14.523 18.787s4.501-4.505 6.255-6.26c.146-.146.219-.338.219-.53s-.073-.383-.219-.53c-1.753-1.754-6.255-6.258-6.255-6.258-.144-.145-.334-.217-.524-.217-.193 0-.385.074-.532.221-.293.292-.295.766-.004 1.056l4.978 4.978h-14.692c-.414 0-.75.336-.75.75s.336.75.75.75h14.692l-4.979 4.979c-.289.289-.286.762.006 1.054.148.148.341.222.533.222.19 0 .378-.072.522-.215z" />
+                  </svg>
+                </div>
+              </a>
+            </div>
+
+            {/* Mobile-only exact fallback */}
+            <div className="block lg:hidden w-full order-first mb-4 z-[1]">
+              <img 
+                src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=1200&auto=format&fit=crop" 
+                alt="Sagar Shree Specialty" 
+                className="w-full object-cover align-bottom m-0 shadow-xl" 
+                style={{ aspectRatio: '1200/1650' }}
+              />
+            </div>
+
           </div>
         </div>
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float">
-          <div className="w-6 h-10 border-2 border-primary/40 rounded-full flex justify-center pt-2">
-            <div className="w-1 h-3 bg-primary/60 rounded-full" />
-          </div>
-        </div>
+
+        <style dangerouslySetInnerHTML={{__html: `
+          @keyframes rotation { to { transform: rotate(1turn); } }
+        `}} />
       </section>
 
       {/* Today's Offers */}

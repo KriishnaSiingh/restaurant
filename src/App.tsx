@@ -13,7 +13,6 @@ import Hotel from "./pages/Hotel";
 import About from "./pages/About";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
-import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,7 +32,6 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />

@@ -1,18 +1,18 @@
 import { useState } from 'react';
-import { Heart, ShoppingBag, ChefHat } from 'lucide-react';
+import { ChefHat } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ScrollReveal from '@/components/ScrollReveal';
 import SectionHeading from '@/components/SectionHeading';
-import { menuItems, MenuItem } from '@/data/menuData';
-import { useCart } from '@/hooks/useCart';
-import { useWishlist } from '@/hooks/useWishlist';
-import { toast } from 'sonner';
+import { menuItems } from '@/data/menuData';
 
 const categories = [
   { key: 'all', label: 'All' },
-  { key: 'veg', label: '🌿 Vegetarian' },
-  { key: 'non-veg', label: '🥩 Non-Veg' },
-  { key: 'drinks', label: '🍸 Drinks' },
+  { key: 'chaat', label: '🍿 Chaat Mahal' },
+  { key: 'chinese', label: '🍜 Chinese' },
+  { key: 'south-indian', label: '🥯 South Indian' },
+  { key: 'north-indian', label: '🍲 North Indian' },
+  { key: 'combos', label: '✨ Combos & Meals' },
+  { key: 'drinks', label: '🍹 Beverages' },
   { key: 'desserts', label: '🍰 Desserts' },
 ] as const;
 
@@ -20,16 +20,9 @@ export default function Restaurant() {
   const [category, setCategory] = useState<string>('all');
   const [showReservation, setShowReservation] = useState(false);
   const [reserved, setReserved] = useState(false);
-  const { addItem } = useCart();
-  const { toggle, has } = useWishlist();
 
   const filtered = category === 'all' ? menuItems : menuItems.filter(m => m.category === category);
   const chefSpecials = menuItems.filter(m => m.isChefSpecial);
-
-  const handleAddToCart = (item: MenuItem) => {
-    addItem({ id: item.id, name: item.name, price: item.offerPrice || item.price, image: item.image });
-    toast.success(`${item.name} added to cart`);
-  };
 
   return (
     <div className="min-h-screen pt-24">
@@ -61,15 +54,7 @@ export default function Restaurant() {
                     <h3 className="font-display text-xl text-foreground">{dish.name}</h3>
                     <p className="text-muted-foreground text-sm mt-2">{dish.description}</p>
                     <div className="flex items-center justify-between mt-4">
-                      <span className="text-primary font-display text-xl">${dish.price}</span>
-                      <div className="flex gap-2">
-                        <button onClick={() => { toggle(dish.id); toast.success(has(dish.id) ? 'Removed from wishlist' : 'Added to wishlist'); }} className={`p-2 rounded-full border transition-colors ${has(dish.id) ? 'border-primary bg-primary/20 text-primary' : 'border-border text-muted-foreground hover:text-primary hover:border-primary'}`}>
-                          <Heart size={14} fill={has(dish.id) ? 'currentColor' : 'none'} />
-                        </button>
-                        <button onClick={() => handleAddToCart(dish)} className="p-2 rounded-full border border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors">
-                          <ShoppingBag size={14} />
-                        </button>
-                      </div>
+                      <span className="text-primary font-display text-xl">₹{dish.price}</span>
                     </div>
                   </div>
                 </div>
@@ -79,66 +64,96 @@ export default function Restaurant() {
         </div>
       </section>
 
-      {/* Full Menu */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
+      {/* Full Menu - Zomato / Swiggy Style */}
+      <section className="py-20 bg-background relative">
+        <div className="container mx-auto px-4 lg:px-8">
           <SectionHeading title="Full Menu" subtitle="Explore Our Offerings" />
 
-          {/* Category Filters */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
-            {categories.map(cat => (
-              <button
-                key={cat.key}
-                onClick={() => setCategory(cat.key)}
-                className={`px-5 py-2.5 rounded-full text-sm transition-all duration-300 ${category === cat.key ? 'bg-primary text-primary-foreground' : 'glass text-muted-foreground hover:text-foreground'}`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-12 relative">
+            {/* Left Sidebar / Sticky TopNav - Categories */}
+            <div className="lg:w-64 shrink-0 lg:sticky lg:top-24 h-max z-40 bg-background/95 backdrop-blur-sm -mx-4 px-4 lg:mx-0 lg:px-0 py-2 lg:py-0 border-b lg:border-none border-border">
+              <div className="flex lg:flex-col overflow-x-auto hide-scrollbar gap-2 lg:gap-1 pb-2 lg:pb-0">
+                {categories.filter(c => c.key !== 'all').map(cat => (
+                  <button
+                    key={cat.key}
+                    onClick={() => {
+                      const el = document.getElementById(`cat-${cat.key}`);
+                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }}
+                    className="whitespace-nowrap px-5 py-2.5 lg:py-4 lg:px-6 text-sm lg:text-base font-medium rounded-full lg:rounded-xl text-left transition-all bg-secondary/30 text-foreground/70 hover:bg-primary/10 hover:text-primary shrink-0"
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((item, i) => (
-              <ScrollReveal key={item.id} delay={(i % 3) * 0.1}>
-                <div className="group glass rounded-xl overflow-hidden hover:shadow-gold transition-all duration-500 h-full flex flex-col">
-                  <div className="relative overflow-hidden aspect-[4/3]">
-                    <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                    {item.isOffer && (
-                      <div className="absolute top-3 right-3 bg-destructive text-destructive-foreground text-xs px-3 py-1 rounded-full font-bold">OFFER</div>
-                    )}
-                    <div className="absolute top-3 left-3">
-                      <span className={`text-xs px-2 py-1 rounded-full ${item.category === 'veg' ? 'bg-green-500/80 text-white' : item.category === 'non-veg' ? 'bg-red-500/80 text-white' : 'bg-primary/80 text-primary-foreground'}`}>
-                        {item.category === 'veg' ? '🌿 Veg' : item.category === 'non-veg' ? '🥩 Non-Veg' : item.category === 'drinks' ? '🍸 Drink' : '🍰 Dessert'}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-5 flex-1 flex flex-col">
-                    <h3 className="font-display text-lg text-foreground">{item.name}</h3>
-                    <p className="text-muted-foreground text-sm mt-1 flex-1">{item.description}</p>
-                    <div className="flex items-center justify-between mt-4">
-                      <div>
-                        {item.isOffer && item.offerPrice ? (
-                          <div className="flex items-baseline gap-2">
-                            <span className="text-primary font-display text-xl">${item.offerPrice}</span>
-                            <span className="text-muted-foreground line-through text-sm">${item.price}</span>
+            {/* Right Side - Menu Lists */}
+            <div className="flex-1 max-w-4xl pb-20">
+              {categories.filter(c => c.key !== 'all').map(cat => {
+                const catItems = menuItems.filter(m => m.category === cat.key);
+                if (catItems.length === 0) return null;
+
+                return (
+                  <div key={cat.key} id={`cat-${cat.key}`} className="scroll-mt-32 pt-8 first:pt-0 mb-12">
+                    <h2 className="font-display text-3xl text-foreground mb-6 pb-2 border-b-2 border-primary border-dashed inline-block">{cat.label.replace(/[^a-zA-Z -]/g, '')}</h2>
+                    
+                    <div className="flex flex-col">
+                      {catItems.map((item, index) => (
+                        <div key={item.id} className={`flex flex-col-reverse sm:flex-row gap-4 sm:gap-6 py-6 ${index !== catItems.length - 1 ? 'border-b border-border/40' : ''}`}>
+                          
+                          {/* Item Details */}
+                          <div className="flex-1 flex flex-col justify-center">
+                            <div className="flex items-center gap-2 mb-2">
+                              {/* Veg / Non-Veg Icon */}
+                              {item.category === 'veg' && (
+                                <div className="w-4 h-4 border-2 border-green-600 flex items-center justify-center p-[2px] rounded-sm shrink-0">
+                                  <div className="w-full h-full bg-green-600 rounded-full"></div>
+                                </div>
+                              )}
+                              {item.category === 'non-veg' && (
+                                <div className="w-4 h-4 border-2 border-red-600 flex items-center justify-center p-[2px] rounded-sm shrink-0">
+                                  <div className="w-full h-full bg-red-600 rounded-full"></div>
+                                </div>
+                              )}
+                              {item.isOffer && (
+                                <span className="text-[10px] font-bold bg-primary/20 text-primary px-2 py-0.5 rounded uppercase tracking-wider">Special Offer</span>
+                              )}
+                            </div>
+                            
+                            <h3 className="font-display text-xl sm:text-2xl text-foreground mb-1">{item.name}</h3>
+                            
+                            <div className="flex items-center gap-3 mb-3">
+                              <span className="font-semibold text-lg text-foreground">
+                                ₹{item.isOffer && item.offerPrice ? item.offerPrice : item.price}
+                              </span>
+                              {item.isOffer && item.offerPrice && (
+                                <span className="text-muted-foreground line-through text-sm">₹{item.price}</span>
+                              )}
+                            </div>
+                            
+                            <p className="text-muted-foreground text-sm leading-relaxed sm:pr-8">
+                              {item.description}
+                            </p>
                           </div>
-                        ) : (
-                          <span className="text-primary font-display text-xl">${item.price}</span>
-                        )}
-                      </div>
-                      <div className="flex gap-2">
-                        <button onClick={() => { toggle(item.id); toast.success(has(item.id) ? 'Removed' : 'Wishlisted!'); }} className={`p-2 rounded-full border transition-colors ${has(item.id) ? 'border-primary bg-primary/20 text-primary' : 'border-border text-muted-foreground hover:text-primary'}`}>
-                          <Heart size={14} fill={has(item.id) ? 'currentColor' : 'none'} />
-                        </button>
-                        <button onClick={() => handleAddToCart(item)} className="p-2 rounded-full border border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors">
-                          <ShoppingBag size={14} />
-                        </button>
-                      </div>
+
+                          {/* Item Image */}
+                          <div className="w-full sm:w-40 sm:h-40 shrink-0 relative rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-square group bg-secondary/50">
+                            <img 
+                              src={item.image} 
+                              alt={item.name} 
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                              loading="lazy" 
+                            />
+                          </div>
+
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </div>
-              </ScrollReveal>
-            ))}
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>

@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { Heart, Wifi, Coffee, Bath, Car, Dumbbell, Star, X } from 'lucide-react';
+import { Wifi, Coffee, Bath, Car, Dumbbell, Star, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ScrollReveal from '@/components/ScrollReveal';
 import SectionHeading from '@/components/SectionHeading';
 import { rooms, Room } from '@/data/roomData';
-import { useWishlist } from '@/hooks/useWishlist';
-import { toast } from 'sonner';
 
 const amenityIcons: Record<string, typeof Wifi> = { 'Wi-Fi': Wifi, 'Room Service': Coffee, 'Jacuzzi': Bath, 'Limo Transfer': Car, 'Spa Access': Dumbbell, 'Spa': Dumbbell };
 
@@ -13,7 +11,6 @@ export default function Hotel() {
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [showBooking, setShowBooking] = useState(false);
   const [booked, setBooked] = useState(false);
-  const { toggle, has } = useWishlist();
 
   return (
     <div className="min-h-screen pt-24">
@@ -57,9 +54,6 @@ export default function Hotel() {
                         <span className="text-muted-foreground text-sm">/night</span>
                       </div>
                       <div className="flex gap-2">
-                        <button onClick={() => { toggle(room.id); toast.success(has(room.id) ? 'Removed' : 'Saved!'); }} className={`p-2 rounded-full border transition-colors ${has(room.id) ? 'border-primary bg-primary/20 text-primary' : 'border-border text-muted-foreground hover:text-primary'}`}>
-                          <Heart size={14} fill={has(room.id) ? 'currentColor' : 'none'} />
-                        </button>
                         <Button size="sm" onClick={() => { setSelectedRoom(room); setShowBooking(true); }} className="bg-primary text-primary-foreground hover:bg-primary/90 text-xs tracking-widest uppercase">Book</Button>
                       </div>
                     </div>
