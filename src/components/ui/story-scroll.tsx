@@ -93,6 +93,7 @@ const FlowArt: React.FC<FlowArtProps> = ({
               start: 'top bottom',
               end: 'top 25%',
               scrub: true,
+              refreshPriority: 1,
             },
           });
           if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
@@ -106,6 +107,7 @@ const FlowArt: React.FC<FlowArtProps> = ({
               end: 'bottom top',
               pin: true,
               pinSpacing: false,
+              refreshPriority: 1,
             }),
           );
         }

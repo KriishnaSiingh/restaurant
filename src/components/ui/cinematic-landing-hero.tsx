@@ -259,6 +259,7 @@ export function CinematicHero({
           pin: true,
           scrub: 1,
           anticipatePin: 1,
+          refreshPriority: 10,
           onLeave: () => {
             gsap.set(mainCardRef.current, { autoAlpha: 0 });
           },
@@ -298,6 +299,9 @@ export function CinematicHero({
         }, "pullback") 
         .to(".cta-wrapper", { scale: 1, filter: "blur(0px)", ease: "expo.inOut", duration: 1.8 }, "pullback")
         .to(".main-card", { y: -window.innerHeight - 300, ease: "power3.in", duration: 1.5 });
+
+      // Explicitly refresh ScrollTrigger to align all document coordinates
+      ScrollTrigger.refresh();
 
     }, containerRef);
 

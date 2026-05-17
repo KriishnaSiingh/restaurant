@@ -4,15 +4,26 @@ import { Button } from '@/components/ui/button';
 import ScrollReveal from '@/components/ScrollReveal';
 import SectionHeading from '@/components/SectionHeading';
 import { sagarShreeMenuItems, skyGardenMenuItems } from '@/data/menuData';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useActiveSite } from '@/context/ActiveSiteContext';
 import { HeroSection } from '@/components/ui/hero-section-2';
 import { CinematicHero } from '@/components/ui/cinematic-landing-hero';
 import FlowArt, { FlowSection } from '@/components/ui/story-scroll';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export default function Home() {
   const { activeSite, toggleSite, siteData } = useActiveSite();
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+
+  useEffect(() => {
+    // Coordinated layout sync refreshes
+    const timers = [
+      setTimeout(() => ScrollTrigger.refresh(), 100),
+      setTimeout(() => ScrollTrigger.refresh(), 400),
+      setTimeout(() => ScrollTrigger.refresh(), 800),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, []);
   
   const currentMenu = activeSite === 'sagarshree' ? sagarShreeMenuItems : skyGardenMenuItems;
   const featuredDishes = currentMenu.filter(m => m.isChefSpecial).slice(0, 3);
