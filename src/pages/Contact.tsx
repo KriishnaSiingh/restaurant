@@ -4,14 +4,16 @@ import { Button } from '@/components/ui/button';
 import ScrollReveal from '@/components/ScrollReveal';
 import SectionHeading from '@/components/SectionHeading';
 import { toast } from 'sonner';
+import { useActiveSite } from '@/context/ActiveSiteContext';
 
 export default function Contact() {
+  const { siteData } = useActiveSite();
   const [submitted, setSubmitted] = useState(false);
 
   return (
     <div className="min-h-screen pt-24">
       <section className="relative py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=1200)' }} />
+        <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{ backgroundImage: `url(${siteData.heroImage2})` }} />
         <div className="container mx-auto px-4 relative z-10 text-center">
           <p className="text-primary text-sm tracking-[0.4em] uppercase mb-4 font-body">Get in Touch</p>
           <h1 className="font-display text-5xl md:text-7xl text-foreground">Contact Us</h1>
@@ -30,21 +32,21 @@ export default function Contact() {
                     <div className="w-12 h-12 rounded-full border border-primary/30 flex items-center justify-center shrink-0"><MapPin size={18} className="text-primary" /></div>
                     <div>
                       <p className="text-foreground font-medium">Address</p>
-                      <p className="text-muted-foreground text-sm">42 Mayfair Lane, London W1K 3PB</p>
+                      <p className="text-muted-foreground text-sm">{siteData.address}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full border border-primary/30 flex items-center justify-center shrink-0"><Phone size={18} className="text-primary" /></div>
                     <div>
                       <p className="text-foreground font-medium">Phone</p>
-                      <p className="text-muted-foreground text-sm">+44 20 7123 4567</p>
+                      <p className="text-muted-foreground text-sm">{siteData.phone}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full border border-primary/30 flex items-center justify-center shrink-0"><Mail size={18} className="text-primary" /></div>
                     <div>
                       <p className="text-foreground font-medium">Email</p>
-                      <p className="text-muted-foreground text-sm">hello@lounge.com</p>
+                      <p className="text-muted-foreground text-sm">{siteData.email}</p>
                     </div>
                   </div>
                 </div>
@@ -58,9 +60,10 @@ export default function Contact() {
 
                 {/* Map placeholder */}
                 <div className="mt-8 rounded-xl overflow-hidden border border-border aspect-video bg-secondary/30 flex items-center justify-center">
-                  <div className="text-center">
-                    <MapPin size={40} className="text-primary/30 mx-auto" />
-                    <p className="text-muted-foreground text-sm mt-2">42 Mayfair Lane, London</p>
+                  <div className="text-center p-6">
+                    <MapPin size={40} className="text-primary/30 mx-auto animate-bounce" />
+                    <p className="text-foreground font-semibold mt-2">{siteData.name}</p>
+                    <p className="text-muted-foreground text-xs mt-1 max-w-sm mx-auto">{siteData.address}</p>
                   </div>
                 </div>
               </div>

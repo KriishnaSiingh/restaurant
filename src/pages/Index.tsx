@@ -3,119 +3,90 @@ import { ArrowRight, Star, Utensils, BedDouble, Percent } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ScrollReveal from '@/components/ScrollReveal';
 import SectionHeading from '@/components/SectionHeading';
-import { menuItems } from '@/data/menuData';
-import { rooms } from '@/data/roomData';
+import { sagarShreeMenuItems, skyGardenMenuItems } from '@/data/menuData';
 import { useState } from 'react';
-
-const testimonials = [
-  { name: 'Sophia Laurent', role: 'Food Critic', text: 'An unforgettable culinary journey. The truffle risotto alone is worth the visit. The ambience transports you to another world.', rating: 5 },
-  { name: 'James Worthington', role: 'Travel Blogger', text: 'The Royal Suite exceeded every expectation. Impeccable service, breathtaking views, and the spa is world-class.', rating: 5 },
-  { name: 'Elena Vasquez', role: 'Michelin Guide', text: 'Lounge redefines luxury dining. Every dish tells a story, every bite is a masterpiece. A must-visit destination.', rating: 5 },
-];
+import { useActiveSite } from '@/context/ActiveSiteContext';
+import { HeroSection } from '@/components/ui/hero-section-2';
+import { CinematicHero } from '@/components/ui/cinematic-landing-hero';
+import FlowArt, { FlowSection } from '@/components/ui/story-scroll';
 
 export default function Home() {
+  const { activeSite, toggleSite, siteData } = useActiveSite();
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const featuredDishes = menuItems.filter(m => m.isChefSpecial).slice(0, 3);
-  const featuredRooms = rooms.slice(0, 3);
+  
+  const currentMenu = activeSite === 'sagarshree' ? sagarShreeMenuItems : skyGardenMenuItems;
+  const featuredDishes = currentMenu.filter(m => m.isChefSpecial).slice(0, 3);
+
+  const dynamicHeroData = activeSite === 'sagarshree'
+    ? {
+        logo: {
+          url: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100",
+          alt: "Sagar Shree",
+          text: "Sagar Shree"
+        },
+        slogan: "ESTD. 2022 • ROOFTOP FAMILY RESTAURANT",
+        title: (
+          <>
+            Savor Gorakhpur's <br />
+            <span className="text-gradient-gold">Culinary Legacy</span>
+          </>
+        ),
+        subtitle: "Indulge in our exquisite vegetarian and non-vegetarian rooftop family recipes in Bilandpur, Gorakhpur. The perfect blend of rich Mughlai heritage, Chinese specialties, and memorable stays.",
+        callToAction: {
+          text: "EXPLORE THE MENU →",
+          href: "/restaurant",
+        },
+        backgroundImage: siteData.heroImage1,
+        contactInfo: {
+          website: "sagarshree2022@gmail.com",
+          phone: "+91 7379532767",
+          address: "Bilandpur, Gorakhpur",
+        }
+      }
+    : {
+        logo: {
+          url: "https://images.unsplash.com/photo-1536935338788-846bb9981813?w=100",
+          alt: "Sky Garden",
+          text: "Sky Garden"
+        },
+        slogan: "TWILIGHT CAFE • ROOF TOP LOUNGE",
+        title: (
+          <>
+            Dine Under The Stars, <br />
+            <span className="text-gradient-gold">Elevating Your Vibe</span>
+          </>
+        ),
+        subtitle: "Gorakhpur's premier open-sky social hub. Savor loaded Continental pizzas, fresh signature mocktails, sizzling finger chips, and twilight cabana lounge views.",
+        callToAction: {
+          text: "RESERVE A COZY CABANA →",
+          href: "/restaurant",
+        },
+        backgroundImage: siteData.heroImage2,
+        contactInfo: {
+          website: "sagarshree2022@gmail.com",
+          phone: "+91 7379532767",
+          address: "Bilandpur, Gorakhpur",
+        }
+      };
 
   return (
     <div className="min-h-screen">
-      {/* Hero */}
-      <section id="intro" className="relative z-10 w-full overflow-hidden bg-background pb-10" style={{ height: 'max(800px, 100vh)' }}>
-        <div className="container mx-auto px-4 lg:px-8 h-full relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 auto-rows-auto items-center h-full relative" style={{ paddingTop: 'max(13.6rem, 24vh)' }}>
-            
-            {/* Header */}
-            <div className="lg:col-start-2 lg:col-span-6 row-start-1 z-[2] relative">
-              <div className="font-headings italic text-lg md:text-xl text-foreground mt-1 mb-[-0.375rem] relative flex items-center tracking-[-0.02em] font-medium">
-                <div className="hidden lg:block absolute left-[-20%] top-1/2 w-[15%] h-[1px] bg-foreground/50"></div>
-                <span className="pl-1">Welcome to</span>
-              </div>
-              <h1 className="font-display leading-[1] mt-0 text-foreground" style={{ fontSize: 'clamp(5rem, 3rem + 8vw, 18.4rem)' }}>
-                Sagar<br />
-                Shree
-              </h1>
-            </div>
+      {/* Dynamic Split Hero Section */}
+      <HeroSection
+        title={dynamicHeroData.title}
+        subtitle={dynamicHeroData.subtitle}
+        callToAction={dynamicHeroData.callToAction}
+        backgroundImage={dynamicHeroData.backgroundImage}
+        contactInfo={dynamicHeroData.contactInfo}
+        className="border-b border-border/40"
+      />
 
-            {/* Primary Picture (Absolute Center on Desktop) */}
-            <div className="hidden lg:flex absolute z-[1]" style={{ top: 'max(13.6rem, 24vh)', left: '50%', transform: 'translateX(-50%)', width: '33.3333%', padding: '0 1rem' }}>
-              <img 
-                src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=1200&auto=format&fit=crop" 
-                alt="Sagar Shree Specialty" 
-                className="w-full object-cover align-bottom m-0 shadow-xl" 
-                style={{ aspectRatio: '1200/1650' }}
-              />
-            </div>
+      {/* Cinematic Delivery Hero */}
+      <CinematicHero 
+        brandName={activeSite === 'sagarshree' ? "Sagar Shree" : "Sky Garden"} 
+      />
 
-            {/* Secondary Block */}
-            <div className="lg:col-start-9 lg:col-span-4 lg:row-start-1 lg:row-end-3 flex flex-col justify-center items-center relative z-[2] mt-12 lg:mt-0 pb-8 lg:pb-0">
-              <figure className="relative w-full mb-0">
-                <img 
-                  src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1050" 
-                  alt="Sagar Shree Interior" 
-                  className="w-full object-cover align-bottom m-0 shadow-lg" 
-                  style={{ aspectRatio: '1050/600' }}
-                />
-              </figure>
-              <div className="w-full border-t border-border/80 pt-4 mt-6">
-                <p className="text-foreground/80 md:text-[15px] font-body leading-relaxed m-0 border-t border-border/40 pt-4">
-                  Savor moments of bliss with every bite, as our expertly crafted dishes and luxurious stay embrace your senses.
-                </p>
-                <ul className="flex flex-wrap gap-4 list-none p-0 mt-6 mx-0">
-                  <li><a href="#0" className="text-sm tracking-[0.15em] text-foreground/50 uppercase hover:text-foreground transition-colors">FB</a></li>
-                  <li><a href="#0" className="text-sm tracking-[0.15em] text-foreground/50 uppercase hover:text-foreground transition-colors">IG</a></li>
-                  <li><a href="#0" className="text-sm tracking-[0.15em] text-foreground/50 uppercase hover:text-foreground transition-colors">PI</a></li>
-                  <li><a href="#0" className="text-sm tracking-[0.15em] text-foreground/50 uppercase hover:text-foreground transition-colors">X</a></li>
-                </ul>
-              </div>
-            </div>
 
-            {/* Scroll Button */}
-            <div className="hidden lg:flex lg:col-start-2 lg:col-span-6 lg:row-start-2 relative z-[2]">
-              <a href="#about" className="inline-flex items-center justify-center relative hover:opacity-80 transition-opacity" style={{ width: '9.2rem', height: '9.2rem' }}>
-                <div className="absolute inset-0 rounded-full animate-[rotation_12s_linear_infinite]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 100 100%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath id=%22curve%22 fill=%22transparent%22 d=%22M 15, 50 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0%22/%3E%3Ctext fill=%22%234E342E%22 font-family=%22sans-serif%22 font-size=%2210%22 font-weight=%22600%22 letter-spacing=%224px%22%3E%3CtextPath href=%22%23curve%22%3E SCROLL DOWN \u2022 SCROLL DOWN \u2022 SCROLL DOWN \u2022%3C/textPath%3E%3C/text%3E%3C/svg%3E")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
-                <div className="flex justify-center items-center bg-background rounded-full z-10 w-8 h-8">
-                  <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
-                     <path d="m14.523 18.787s4.501-4.505 6.255-6.26c.146-.146.219-.338.219-.53s-.073-.383-.219-.53c-1.753-1.754-6.255-6.258-6.255-6.258-.144-.145-.334-.217-.524-.217-.193 0-.385.074-.532.221-.293.292-.295.766-.004 1.056l4.978 4.978h-14.692c-.414 0-.75.336-.75.75s.336.75.75.75h14.692l-4.979 4.979c-.289.289-.286.762.006 1.054.148.148.341.222.533.222.19 0 .378-.072.522-.215z" />
-                  </svg>
-                </div>
-              </a>
-            </div>
-
-            {/* Mobile-only exact fallback */}
-            <div className="block lg:hidden w-full order-first mb-4 z-[1]">
-              <img 
-                src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=1200&auto=format&fit=crop" 
-                alt="Sagar Shree Specialty" 
-                className="w-full object-cover align-bottom m-0 shadow-xl" 
-                style={{ aspectRatio: '1200/1650' }}
-              />
-            </div>
-
-          </div>
-        </div>
-
-        <style dangerouslySetInnerHTML={{__html: `
-          @keyframes rotation { to { transform: rotate(1turn); } }
-        `}} />
-      </section>
-
-      {/* Today's Offers */}
-      <section className="py-12 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-y border-primary/20">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 text-center md:text-left">
-            <div className="flex items-center gap-3">
-              <Percent className="text-primary" size={24} />
-              <span className="text-foreground font-display text-lg">Today's Offers</span>
-            </div>
-            <div className="flex flex-wrap justify-center gap-4">
-              <span className="glass px-4 py-2 rounded-full text-sm text-foreground">🍽️ 20% off Chef's Special</span>
-              <span className="glass px-4 py-2 rounded-full text-sm text-foreground">🏨 Free breakfast with Suite booking</span>
-              <span className="glass px-4 py-2 rounded-full text-sm text-foreground">🥂 Complimentary welcome drink</span>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Featured Dishes */}
       <section className="py-24">
@@ -130,9 +101,21 @@ export default function Home() {
                     <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full font-semibold">Chef's Special</div>
                   </div>
                   <div className="p-6">
-                    <h3 className="font-display text-xl text-foreground">{dish.name}</h3>
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-display text-xl text-foreground">{dish.name}</h3>
+                      {dish.isNonVeg && (
+                        <div className="w-3.5 h-3.5 border-2 border-red-600 flex items-center justify-center p-[1px] rounded-sm shrink-0">
+                          <div className="w-full h-full bg-red-600 rounded-full"></div>
+                        </div>
+                      )}
+                      {!dish.isNonVeg && activeSite === 'skygarden' && (
+                        <div className="w-3.5 h-3.5 border-2 border-green-600 flex items-center justify-center p-[1px] rounded-sm shrink-0">
+                          <div className="w-full h-full bg-green-600 rounded-full"></div>
+                        </div>
+                      )}
+                    </div>
                     <p className="text-muted-foreground text-sm mt-2 line-clamp-2">{dish.description}</p>
-                    <p className="text-primary font-display text-xl mt-3">${dish.price}</p>
+                    <p className="text-primary font-display text-xl mt-3">₹{dish.price}</p>
                   </div>
                 </div>
               </ScrollReveal>
@@ -148,67 +131,125 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Rooms */}
-      <section className="py-24 bg-card">
-        <div className="container mx-auto px-4">
-          <SectionHeading title="Luxury Accommodations" subtitle="Rest & Rejuvenate" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featuredRooms.map((room, i) => (
-              <ScrollReveal key={room.id} delay={i * 0.15}>
-                <div className="group glass rounded-xl overflow-hidden hover:shadow-gold transition-all duration-500">
-                  <div className="relative overflow-hidden aspect-[4/3]">
-                    <img src={room.image} alt={room.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
-                    <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full font-semibold capitalize">{room.type}</div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="font-display text-xl text-foreground">{room.name}</h3>
-                    <p className="text-muted-foreground text-sm mt-2 line-clamp-2">{room.description}</p>
-                    <div className="flex items-baseline gap-1 mt-3">
-                      <span className="text-primary font-display text-xl">${room.price}</span>
-                      <span className="text-muted-foreground text-sm">/night</span>
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <Link to="/hotel">
-              <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary hover:text-primary-foreground gap-2 tracking-widest uppercase text-xs">
-                View All Rooms <ArrowRight size={14} />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
 
-      {/* Dinner + Stay Package */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200)' }} />
-        <div className="container mx-auto px-4 relative z-10">
-          <ScrollReveal>
-            <div className="max-w-3xl mx-auto text-center glass-strong rounded-2xl p-12 md:p-16">
-              <div className="inline-block bg-primary text-primary-foreground text-xs px-4 py-1 rounded-full font-bold tracking-widest uppercase mb-6">Save 30%</div>
-              <h2 className="font-display text-3xl md:text-5xl text-foreground">Dinner & Stay Package</h2>
-              <p className="text-muted-foreground mt-4 text-lg max-w-xl mx-auto">
-                Enjoy a 5-course chef's tasting menu paired with a luxurious overnight stay. The ultimate indulgence.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center mt-8 items-center">
-                <div className="text-center">
-                  <p className="text-muted-foreground line-through text-lg">$580</p>
-                  <p className="text-primary font-display text-4xl">$399</p>
-                  <p className="text-muted-foreground text-sm">per couple</p>
-                </div>
+
+
+      {/* Brand Story Scroll Section */}
+      <div className="relative z-20">
+        {activeSite === 'sagarshree' ? (
+          <FlowArt aria-label="Sagar Shree Story Scroll">
+            <FlowSection aria-label="Our Legacy" style={{ backgroundColor: '#1e3f2d', color: '#ffffff' }}>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">01 — Our Legacy</p>
+              <hr className="my-[2vw] border-none border-t border-white/20" />
+              <div>
+                <h1 className="text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] uppercase tracking-tight font-display">
+                  Legacy
+                  <br />
+                  Of
+                  <br />
+                  Flavors
+                </h1>
               </div>
-              <Link to="/contact">
-                <Button className="mt-8 bg-primary text-primary-foreground hover:bg-primary/90 px-10 py-6 text-sm tracking-widest uppercase">
-                  Reserve Package
-                </Button>
-              </Link>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
+              <hr className="my-[2vw] border-none border-t border-white/20" />
+              <p className="mt-auto max-w-[50ch] text-[clamp(1rem,2vw,1.75rem)] font-normal leading-relaxed font-body">
+                For over two decades, Sagar Shree has been Gorakhpur's proud home of authentic Indian culinary heritage. We cook with patience, using recipes passed down through generations.
+              </p>
+            </FlowSection>
+
+            <FlowSection aria-label="Clay Oven Artistry" style={{ backgroundColor: '#0f1f16', color: '#ebd7c0' }}>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">02 — Clay Oven</p>
+              <hr className="my-[2vw] border-none border-t border-primary/20" />
+              <div>
+                <h2 className="text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] uppercase tracking-tight font-display">
+                  Clay
+                  <br />
+                  Tandoor
+                  <br />
+                  Artistry
+                </h2>
+              </div>
+              <hr className="my-[2vw] border-none border-t border-primary/20" />
+              <p className="max-w-[50ch] text-[clamp(1rem,2vw,1.75rem)] font-normal leading-relaxed text-white/90 font-body">
+                Our signature Naans and succulent Tandoori Paneer are cooked in a traditional clay oven over real charcoal flame. This delivers that authentic, deep smoky flavor that defines pure North Indian cuisine.
+              </p>
+            </FlowSection>
+
+            <FlowSection aria-label="Pure Family Dining" style={{ backgroundColor: '#eae3d2', color: '#1e3f2d' }}>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">03 — Pure Dining</p>
+              <hr className="my-[2vw] border-none border-t border-primary/20" />
+              <div>
+                <h2 className="text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] uppercase tracking-tight font-display">
+                  Plated
+                  <br />
+                  With
+                  <br />
+                  Love
+                </h2>
+              </div>
+              <hr className="my-[2vw] border-none border-t border-primary/20" />
+              <p className="mt-auto max-w-[50ch] text-[clamp(1rem,2vw,1.75rem)] font-normal leading-relaxed font-body">
+                We believe in pure family environments, fresh hand-picked ingredients, and cooking without shortcuts. Your table is a celebration of love, flavor, and visual art.
+              </p>
+            </FlowSection>
+          </FlowArt>
+        ) : (
+          <FlowArt aria-label="Sky Garden Story Scroll">
+            <FlowSection aria-label="Skyline Dining" style={{ backgroundColor: '#0c1220', color: '#ffffff' }}>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">01 — Skyline Dining</p>
+              <hr className="my-[2vw] border-none border-t border-white/20" />
+              <div>
+                <h1 className="text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] uppercase tracking-tight font-display">
+                  Under
+                  <br />
+                  The
+                  <br />
+                  Stars
+                </h1>
+              </div>
+              <hr className="my-[2vw] border-none border-t border-white/20" />
+              <p className="mt-auto max-w-[50ch] text-[clamp(1rem,2vw,1.75rem)] font-normal leading-relaxed font-body">
+                Sky Garden is Gorakhpur's premium open-air rooftop café and lounge. Elevate your evening with breathtaking skyline views and a dining experience under a canopy of stars.
+              </p>
+            </FlowSection>
+
+            <FlowSection aria-label="Continental Fusion" style={{ backgroundColor: '#b19453', color: '#0c1220' }}>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-white">02 — Continental Fusion</p>
+              <hr className="my-[2vw] border-none border-t border-black/20" />
+              <div>
+                <h2 className="text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] uppercase tracking-tight font-display">
+                  Flavors
+                  <br />
+                  Above
+                  <br />
+                  Ground
+                </h2>
+              </div>
+              <hr className="my-[2vw] border-none border-t border-black/20" />
+              <p className="max-w-[50ch] text-[clamp(1rem,2vw,1.75rem)] font-normal leading-relaxed text-black/90 font-body">
+                Experience hand-tossed artisan pizzas, sizzling gourmet momos, and continental small plates curated by Chef Sameer. Every dish is crafted to match the drama of the evening sunset.
+              </p>
+            </FlowSection>
+
+            <FlowSection aria-label="Sunset Mocktails" style={{ backgroundColor: '#18223c', color: '#f3e9d2' }}>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">03 — Vibes & Sips</p>
+              <hr className="my-[2vw] border-none border-t border-white/20" />
+              <div>
+                <h2 className="text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] uppercase tracking-tight font-display text-white">
+                  Sip
+                  <br />
+                  The
+                  <br />
+                  Sunset
+                </h2>
+              </div>
+              <hr className="my-[2vw] border-none border-t border-white/20" />
+              <p className="mt-auto max-w-[50ch] text-[clamp(1rem,2vw,1.75rem)] font-normal leading-relaxed font-body">
+                Unwind with our signature handcrafted mocktails, thick gourmet shakes, and live acoustic music. The perfect escape from the city rush below.
+              </p>
+            </FlowSection>
+          </FlowArt>
+        )}
+      </div>
 
       {/* Testimonials */}
       <section className="py-24 bg-card">
@@ -217,17 +258,17 @@ export default function Home() {
           <ScrollReveal>
             <div className="max-w-2xl mx-auto text-center">
               <div className="flex justify-center gap-1 mb-6">
-                {Array(testimonials[currentTestimonial].rating).fill(0).map((_, i) => (
+                {Array(siteData.testimonials[currentTestimonial]?.rating || 5).fill(0).map((_, i) => (
                   <Star key={i} size={18} className="fill-primary text-primary" />
                 ))}
               </div>
               <p className="text-foreground text-lg md:text-xl italic leading-relaxed font-display">
-                "{testimonials[currentTestimonial].text}"
+                "{siteData.testimonials[currentTestimonial]?.text}"
               </p>
-              <p className="text-primary mt-6 font-semibold">{testimonials[currentTestimonial].name}</p>
-              <p className="text-muted-foreground text-sm">{testimonials[currentTestimonial].role}</p>
+              <p className="text-primary mt-6 font-semibold">{siteData.testimonials[currentTestimonial]?.name}</p>
+              <p className="text-muted-foreground text-sm">{siteData.testimonials[currentTestimonial]?.role}</p>
               <div className="flex justify-center gap-3 mt-8">
-                {testimonials.map((_, i) => (
+                {siteData.testimonials.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => setCurrentTestimonial(i)}

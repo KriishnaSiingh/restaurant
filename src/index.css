@@ -45,13 +45,66 @@
     --sidebar-border: 35 30% 80%;
     --sidebar-ring: 80 60% 35%;
 
-    --gold: 80 60% 35%;
+    --cinematic-card-start: 80 60% 20%; /* Deep Sage Green */
+    --cinematic-card-end: 80 60% 8%;
+
+    --gold: 43 74% 66%;
     --gold-light: 82 20% 62%;
     --gold-dark: 80 70% 25%;
     --ivory: 0 0% 100%;
     --charcoal: 11 26% 24%;
     --glass: 0 0% 100% / 0.5;
     --glass-border: 11 26% 24% / 0.1;
+  }
+
+  .theme-skygarden {
+    --background: 222 47% 11%; /* Deep Navy #0F172A */
+    --foreground: 210 20% 98%; /* Pearl White */
+
+    --card: 222 47% 14%; /* Slightly lighter navy for cards */
+    --card-foreground: 210 20% 98%;
+
+    --popover: 222 47% 14%;
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 40 48% 56%; /* Champagne Gold #C5A059 */
+    --primary-foreground: 222 47% 11%; /* Dark Navy text on gold */
+
+    --secondary: 40 20% 87%; /* Muted Beige / Ivory */
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 222 47% 18%; /* Dark Slate / Navy border elements */
+    --muted-foreground: 210 10% 75%; /* Warm Gray / Silver */
+
+    --accent: 40 48% 56%; /* Champagne Gold */
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 47% 18%; /* Slate Borders */
+    --input: 222 47% 18%;
+    --ring: 40 48% 56%; /* Champagne Gold */
+
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 20% 98%;
+    --sidebar-primary: 40 48% 56%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 40 48% 56%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 222 47% 18%;
+    --sidebar-ring: 40 48% 56%;
+
+    --cinematic-card-start: 40 50% 35%; /* Rich Antique Gold */
+    --cinematic-card-end: 40 60% 12%; /* Deep Bronze Gold */
+
+    --gold: 40 48% 56%; /* Champagne Gold */
+    --gold-light: 40 60% 70%;
+    --gold-dark: 40 50% 40%;
+    --ivory: 40 20% 95%; /* Clean Ivory */
+    --charcoal: 210 20% 98%;
+    --glass: 222 47% 11% / 0.7;
+    --glass-border: 210 20% 98% / 0.15;
   }
 }
 
@@ -87,28 +140,28 @@
   }
 
   .glass-strong {
-    background: hsl(0 0% 100% / 0.7);
+    background: hsl(var(--card) / 0.75);
     backdrop-filter: blur(20px);
-    border: 1px solid hsl(11 26% 24% / 0.15);
+    border: 1px solid hsl(var(--foreground) / 0.12);
   }
 
   .text-gradient-gold {
-    background: linear-gradient(135deg, hsl(82 20% 62%), hsl(80 60% 35%), hsl(80 70% 25%));
+    background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--primary)), hsl(var(--gold-dark)));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .bg-gradient-gold {
-    background: linear-gradient(135deg, hsl(82 20% 62%), hsl(80 60% 35%));
+    background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--primary)));
   }
 
   .shadow-gold {
-    box-shadow: 0 0 30px hsl(80 60% 35% / 0.15);
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.15);
   }
 
   .line-gold {
-    background: linear-gradient(90deg, transparent, hsl(80 60% 35%), transparent);
+    background: linear-gradient(90deg, transparent, hsl(var(--primary)), transparent);
     height: 1px;
   }
 }
@@ -118,10 +171,10 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: hsl(35 55% 91%); /* Cream */
+  background: hsl(var(--background));
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(80 60% 35% / 0.5); /* Olive */
+  background: hsl(var(--primary) / 0.5);
   border-radius: 3px;
 }
 
