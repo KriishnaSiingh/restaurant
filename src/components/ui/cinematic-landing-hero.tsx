@@ -12,11 +12,11 @@ if (typeof window !== "undefined") {
 const INJECTED_STYLES = `
   .gsap-reveal { visibility: hidden; }
 
-  /* Environment Overlays */
+  /* Environment Overlays - Optimized: removed heavy fractal turbulence */
   .film-grain {
       position: absolute; inset: 0; width: 100%; height: 100%;
       pointer-events: none; z-index: 50; opacity: 0.05; mix-blend-mode: overlay;
-      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
+      background: rgba(255, 255, 255, 0.015);
   }
 
   .bg-grid-theme {
@@ -46,9 +46,7 @@ const INJECTED_STYLES = `
       -webkit-text-fill-color: transparent;
       background-clip: text;
       transform: translateZ(0); /* Hardware acceleration to prevent WebKit clipping bug */
-      filter: 
-          drop-shadow(0px 10px 20px color-mix(in srgb, hsl(var(--foreground)) 15%, transparent)) 
-          drop-shadow(0px 2px 4px color-mix(in srgb, hsl(var(--foreground)) 10%, transparent));
+      text-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05);
   }
 
   /* INSIDE THE CARD: Hardcoded Silver/White for the dark background, deep rich shadows */
@@ -58,9 +56,7 @@ const INJECTED_STYLES = `
       -webkit-text-fill-color: transparent;
       background-clip: text;
       transform: translateZ(0);
-      filter: 
-          drop-shadow(0px 12px 24px rgba(0,0,0,0.8)) 
-          drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
+      text-shadow: 0 8px 16px rgba(0,0,0,0.5);
   }
 
   /* Deep Physical Card with Dynamic Mouse Lighting */
@@ -73,6 +69,7 @@ const INJECTED_STYLES = `
           inset 0 -2px 4px rgba(0, 0, 0, 0.5);
       border: 1px solid rgba(255, 255, 255, 0.04);
       position: relative;
+      will-change: transform, opacity; /* GPU Hardware Acceleration */
   }
 
   .card-sheen {
@@ -90,6 +87,7 @@ const INJECTED_STYLES = `
           0 40px 80px -15px rgba(0,0,0,0.9),
           0 15px 25px -5px rgba(0,0,0,0.7);
       transform-style: preserve-3d;
+      will-change: transform; /* Hardware Acceleration */
   }
 
   .hardware-btn {
@@ -114,15 +112,15 @@ const INJECTED_STYLES = `
       border: 1px solid rgba(255,255,255,0.03);
   }
 
+  /* Optimized: Removed backdrop-filter: blur() which causes heavy CPU painting during active 3D scroll rotations */
   .floating-ui-badge {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
-      backdrop-filter: blur(24px); 
-      -webkit-backdrop-filter: blur(24px);
+      background: rgba(15, 23, 42, 0.88); /* Solid dark premium gloss */
       box-shadow: 
-          0 0 0 1px rgba(255, 255, 255, 0.1),
-          0 25px 50px -12px rgba(0, 0, 0, 0.8),
-          inset 0 1px 1px rgba(255,255,255,0.2),
+          0 0 0 1px rgba(255, 255, 255, 0.08),
+          0 20px 40px -10px rgba(0, 0, 0, 0.8),
+          inset 0 1px 1px rgba(255,255,255,0.1),
           inset 0 -1px 1px rgba(0,0,0,0.5);
+      will-change: transform, opacity; /* GPU Hardware Acceleration */
   }
 
   /* Physical Tactile Buttons */
@@ -199,8 +197,17 @@ export function CinematicHero({
   const mockupRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(0);
 
-  // High-Performance Mouse Interaction Logic
+  // High-Performance Mouse Interaction Logic (Layout Reflow Optimized)
   useEffect(() => {
+    if (window.innerWidth < 768) return; // Disable heavy mouse tracking on mobile to conserve CPU
+
+    let cachedRect: DOMRect | null = null;
+    
+    const handleResize = () => {
+      cachedRect = null; // Reset cache on resize
+    };
+    window.addEventListener("resize", handleResize);
+
     const handleMouseMove = (e: MouseEvent) => {
       if (window.scrollY > window.innerHeight * 2) return;
 
@@ -208,9 +215,11 @@ export function CinematicHero({
       
       requestRef.current = requestAnimationFrame(() => {
         if (mainCardRef.current && mockupRef.current) {
-          const rect = mainCardRef.current.getBoundingClientRect();
-          const mouseX = e.clientX - rect.left;
-          const mouseY = e.clientY - rect.top;
+          if (!cachedRect) {
+            cachedRect = mainCardRef.current.getBoundingClientRect();
+          }
+          const mouseX = e.clientX - cachedRect.left;
+          const mouseY = e.clientY - cachedRect.top;
           
           mainCardRef.current.style.setProperty("--mouse-x", `${mouseX}px`);
           mainCardRef.current.style.setProperty("--mouse-y", `${mouseY}px`);
@@ -231,6 +240,7 @@ export function CinematicHero({
     window.addEventListener("mousemove", handleMouseMove);
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(requestRef.current);
     };
   },[]);
