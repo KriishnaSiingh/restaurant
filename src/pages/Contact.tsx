@@ -7,8 +7,14 @@ import { toast } from 'sonner';
 import { useActiveSite } from '@/context/ActiveSiteContext';
 
 export default function Contact() {
-  const { siteData } = useActiveSite();
+  const { siteData, activeSite } = useActiveSite();
   const [submitted, setSubmitted] = useState(false);
+
+  const mapQuery = activeSite === 'skygarden' 
+    ? 'Sky%20Garden%20Roof%20Top%20Cafe%20Lounge%20Gorakhpur'
+    : 'Sagar%20Shree%20Restaurant%20Bilandpur%20Gorakhpur';
+
+  const mapUrl = `https://maps.google.com/maps?q=${mapQuery}&t=&z=17&ie=UTF8&iwloc=&output=embed`;
 
   return (
     <div className="min-h-screen pt-24">
@@ -50,21 +56,58 @@ export default function Contact() {
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-4 mt-8">
-                  {[Instagram, Facebook, Twitter].map((Icon, i) => (
-                    <a key={i} href="#" className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center text-primary/70 hover:bg-primary hover:text-primary-foreground transition-all duration-300">
-                      <Icon size={16} />
-                    </a>
-                  ))}
+                <div className="flex flex-wrap items-center gap-3 mt-8">
+                  <a 
+                    href={siteData.instagramLink} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    title="Follow us on Instagram" 
+                    className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center text-primary/70 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                  >
+                    <Instagram size={18} />
+                  </a>
+                  <a 
+                    href={siteData.facebookLink} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    title="Follow us on Facebook" 
+                    className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center text-primary/70 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                  >
+                    <Facebook size={18} />
+                  </a>
+                  <a 
+                    href={siteData.zomatoLink} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    title="Order on Zomato" 
+                    className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center bg-white hover:scale-110 transition-all duration-300 p-2 overflow-hidden shadow-sm"
+                  >
+                    <img src="/zomato-logo.png" alt="Zomato" className="w-full h-full object-contain" />
+                  </a>
+                  <a 
+                    href={siteData.swiggyLink} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    title="Order on Swiggy" 
+                    className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center bg-white hover:scale-110 transition-all duration-300 p-2 overflow-hidden shadow-sm"
+                  >
+                    <img src="/swiggy-logo.png" alt="Swiggy" className="w-full h-full object-contain" />
+                  </a>
                 </div>
 
-                {/* Map placeholder */}
-                <div className="mt-8 rounded-xl overflow-hidden border border-border aspect-video bg-secondary/30 flex items-center justify-center">
-                  <div className="text-center p-6">
-                    <MapPin size={40} className="text-primary/30 mx-auto animate-bounce" />
-                    <p className="text-foreground font-semibold mt-2">{siteData.name}</p>
-                    <p className="text-muted-foreground text-xs mt-1 max-w-sm mx-auto">{siteData.address}</p>
-                  </div>
+                {/* Interactive Google Map */}
+                <div className="mt-8 rounded-xl overflow-hidden border border-border aspect-video bg-secondary/30 relative shadow-lg group">
+                  <iframe 
+                    src={mapUrl} 
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0 }}
+                    allowFullScreen={true} 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={`${siteData.name} Location Map`}
+                    className="w-full h-full min-h-[250px] md:min-h-[300px] grayscale opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 ease-in-out"
+                  ></iframe>
                 </div>
               </div>
             </ScrollReveal>
