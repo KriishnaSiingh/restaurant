@@ -31,7 +31,7 @@ export default function Home() {
   const dynamicHeroData = activeSite === 'sagarshree'
     ? {
         logo: {
-          url: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100",
+          url: "/sagarshree-logo.png",
           alt: "Sagar Shree",
           text: "Sagar Shree"
         },
@@ -56,7 +56,7 @@ export default function Home() {
       }
     : {
         logo: {
-          url: "https://images.unsplash.com/photo-1536935338788-846bb9981813?w=100",
+          url: "/skygarden-logo.png",
           alt: "Sky Garden",
           text: "Sky Garden"
         },
@@ -84,6 +84,8 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Dynamic Split Hero Section */}
       <HeroSection
+        logo={dynamicHeroData.logo}
+        slogan={dynamicHeroData.slogan}
         title={dynamicHeroData.title}
         subtitle={dynamicHeroData.subtitle}
         callToAction={dynamicHeroData.callToAction}

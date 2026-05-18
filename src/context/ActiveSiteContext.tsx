@@ -10,6 +10,8 @@ export interface SiteData {
   email: string;
   zomatoLink: string;
   swiggyLink: string;
+  instagramLink: string;
+  facebookLink: string;
   hours: {
     restaurant: string;
     bar: string;
@@ -46,8 +48,10 @@ const contextData: Record<ActiveSite, SiteData> = {
     address: 'In front of New Anand Lok Hospital, Chatrasangh Chauraha, Bilandpur, Gorakhpur',
     phone: '+91 7379532767',
     email: 'sagarshree2022@gmail.com',
-    zomatoLink: 'https://www.zomato.com/gorakhpur/sagar-shree-resturants-bilandpur',
-    swiggyLink: 'https://www.swiggy.com/restaurants/sagar-shree-bilandpur-gorakhpur',
+    zomatoLink: 'https://www.zomato.com/gorakhpur/sagar-shree-golghar',
+    swiggyLink: 'https://www.swiggy.com/city/gorakhpur/sagar-shree-south-indian-specialist-belipar-road-cantt-road-rest403656',
+    instagramLink: 'https://www.instagram.com/sagar_shree_gorakhpur/',
+    facebookLink: 'https://www.facebook.com/profile.php?id=61577955009279#',
     hours: {
       restaurant: 'Mon–Sun: 11:00 AM – 11:00 PM',
       bar: 'Closed (Pure Family Environment)',
@@ -83,8 +87,10 @@ const contextData: Record<ActiveSite, SiteData> = {
     address: 'In front of New Anand Lok Hospital, Chatrasangh Chauraha, Bilandpur, Gorakhpur',
     phone: '+91 7379532767',
     email: 'sagarshree2022@gmail.com',
-    zomatoLink: 'https://www.zomato.com/gorakhpur/sky-garden-bilandpur',
-    swiggyLink: 'https://www.swiggy.com/restaurants/sky-garden-bilandpur-gorakhpur',
+    zomatoLink: 'https://www.zomato.com/gorakhpur/sky-garden-roof-top-cafe-lounge-golghar',
+    swiggyLink: 'https://www.swiggy.com/city/gorakhpur/order-online',
+    instagramLink: 'https://www.instagram.com/skygarden_rooftop_gorakhpur/',
+    facebookLink: 'https://www.facebook.com/p/Sky-garden-restaurant-100093190701800/',
     hours: {
       restaurant: 'Mon–Sun: 12:00 PM – 11:00 PM',
       bar: 'Mon–Sun: 12:00 PM – 11:30 PM (Beverages & Mocktails)',
@@ -134,8 +140,7 @@ export const ActiveSiteProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     document.title = `${name} | ${tag}`;
     
     // Update Favicon Dynamically to match brand identity
-    const faviconEmoji = activeSite === 'skygarden' ? '🌿' : '🍽️';
-    const faviconUrl = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${faviconEmoji}</text></svg>`;
+    const faviconUrl = activeSite === 'skygarden' ? '/skygarden-logo.png' : '/sagarshree-logo.png';
     
     let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
     if (!link) {
@@ -143,7 +148,7 @@ export const ActiveSiteProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       link.rel = 'icon';
       document.getElementsByTagName('head')[0].appendChild(link);
     }
-    link.type = 'image/svg+xml';
+    link.type = 'image/png';
     link.href = faviconUrl;
 
     if (activeSite === 'skygarden') {

@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
+import { useActiveSite } from "@/context/ActiveSiteContext";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -191,6 +192,7 @@ export function CinematicHero({
   className, 
   ...props 
 }: CinematicHeroProps) {
+  const { siteData } = useActiveSite();
   
   const containerRef = useRef<HTMLDivElement>(null);
   const mainCardRef = useRef<HTMLDivElement>(null);
@@ -348,14 +350,14 @@ export function CinematicHero({
           {ctaDescription}
         </p>
         <div className="flex flex-col sm:flex-row gap-6">
-          <a href="https://zomato.com" target="_blank" rel="noreferrer" aria-label="Order on Zomato" className="btn-modern-light flex items-center justify-center gap-3 px-8 py-4 rounded-[1.25rem] group focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+          <a href={siteData.zomatoLink} target="_blank" rel="noreferrer" aria-label="Order on Zomato" className="btn-modern-light flex items-center justify-center gap-3 px-8 py-4 rounded-[1.25rem] group focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
             <img src="/zomato-logo.png" alt="Zomato" className="w-8 h-8 transition-transform group-hover:scale-105 object-contain" />
             <div className="text-left">
               <div className="text-[10px] font-bold tracking-wider text-neutral-500 uppercase mb-[-2px]">Order Online via</div>
               <div className="text-xl font-bold leading-none tracking-tight text-red-600">Zomato</div>
             </div>
           </a>
-          <a href="https://swiggy.com" target="_blank" rel="noreferrer" aria-label="Order on Swiggy" className="btn-modern-dark flex items-center justify-center gap-3 px-8 py-4 rounded-[1.25rem] group focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-background">
+          <a href={siteData.swiggyLink} target="_blank" rel="noreferrer" aria-label="Order on Swiggy" className="btn-modern-dark flex items-center justify-center gap-3 px-8 py-4 rounded-[1.25rem] group focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-background">
             <img src="/swiggy-logo.png" alt="Swiggy" className="w-8 h-8 transition-transform group-hover:scale-105 object-contain" />
             <div className="text-left">
               <div className="text-[10px] font-bold tracking-wider text-neutral-400 uppercase mb-[-2px]">Fast Delivery on</div>

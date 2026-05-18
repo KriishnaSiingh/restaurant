@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Twitter, MapPin, Phone, Mail } from 'lucide-react';
+import { Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react';
 import { useActiveSite } from '@/context/ActiveSiteContext';
 import SiteToggleButton from './SiteToggleButton';
+import BrandLogo from './BrandLogo';
 
 export default function Footer() {
   const { siteData, activeSite } = useActiveSite();
@@ -11,20 +12,52 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <h3 className="font-display text-2xl text-gradient-gold mb-2">{siteData.name}</h3>
-            <p className="text-xs uppercase tracking-widest text-primary font-bold mb-4">{siteData.tagline}</p>
+            <div className="mb-6">
+              <BrandLogo />
+            </div>
             <p className="text-muted-foreground text-sm leading-relaxed mb-6">
               {activeSite === 'sagarshree' 
                 ? 'An exquisite fusion of pure traditional dining and luxury hospitality, where every meal is a sensory celebration.'
                 : 'Gorakhpur\'s finest open-sky culinary oasis under the stars. Perfect mocktails, delicious fusion snacks, and ambient vibes.'
               }
             </p>
-            <div className="flex gap-4 mt-6">
-              {[Instagram, Facebook, Twitter].map((Icon, i) => (
-                <a key={i} href="#" className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center text-primary/70 hover:bg-primary hover:text-primary-foreground transition-all duration-300">
-                  <Icon size={16} />
-                </a>
-              ))}
+            <div className="flex flex-wrap items-center gap-3 mt-6">
+              <a 
+                href={siteData.instagramLink} 
+                target="_blank" 
+                rel="noreferrer" 
+                title="Follow us on Instagram" 
+                className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center text-primary/70 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+              >
+                <Instagram size={18} />
+              </a>
+              <a 
+                href={siteData.facebookLink} 
+                target="_blank" 
+                rel="noreferrer" 
+                title="Follow us on Facebook" 
+                className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center text-primary/70 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+              >
+                <Facebook size={18} />
+              </a>
+              <a 
+                href={siteData.zomatoLink} 
+                target="_blank" 
+                rel="noreferrer" 
+                title="Order on Zomato" 
+                className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center bg-white hover:scale-110 transition-all duration-300 p-2 overflow-hidden shadow-sm"
+              >
+                <img src="/zomato-logo.png" alt="Zomato" className="w-full h-full object-contain" />
+              </a>
+              <a 
+                href={siteData.swiggyLink} 
+                target="_blank" 
+                rel="noreferrer" 
+                title="Order on Swiggy" 
+                className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center bg-white hover:scale-110 transition-all duration-300 p-2 overflow-hidden shadow-sm"
+              >
+                <img src="/swiggy-logo.png" alt="Swiggy" className="w-full h-full object-contain" />
+              </a>
             </div>
           </div>
 
